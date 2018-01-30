@@ -1,0 +1,119 @@
+
+section {
+   border: 1px solid #777;
+   border-radius: 1em;
+   float: left;
+   margin: 0.25em;
+   padding: 1em;
+}
+
+/*~ calendar layout --------------------------------------------------------------------------- */
+
+h2 {
+   margin: 0;
+}
+
+.row, .month-header {
+   display: table-row;
+}
+.day-of-week {
+   display: table-cell;
+   padding-top: 0.5em;
+   padding-bottom: 0.5em;
+   text-align: center;
+   vertical-align: top;
+}
+li.dad, li.mom, li.day, li.blank {
+   border: 1px solid #777;
+   color: black;
+   display: table-cell;
+   height: 5em;
+   min-width: 8em;
+   padding-top: 1em;
+   text-align: center;
+   vertical-align: top;
+}
+
+/*~ calendar text ----------------------------------------------------------------------------- */
+
+.day-of-week-head {
+   font-weight: bold;
+   text-align: center;
+}
+
+/*~ calendar decorations ---------------------------------------------------------------------- */
+
+.day-of-week-head {
+   border: 1px double lightgray;
+   min-width: 5em;
+}
+
+li.day-of-week {
+   border-bottom: 1px solid #777;
+   text-align: center;
+   width: 7em;
+}
+
+li.day {
+    background: white;
+}
+
+li.dad {
+    background: orange url("../image/dad.png") left top no-repeat;
+}
+
+li.mom {
+   background: Aquamarine url("../image/mom.png") left top no-repeat;
+}
+
+
+li.dad.no-spps {
+    background-image: url("../image/dad.png"), url("../image/no-spps.png");
+    background-position: left top, left bottom;
+    background-repeat: no-repeat, no-repeat;
+}
+li.dad.no-uma {
+    background-image: url("../image/dad.png"), url("../image/no-uma.png");
+    background-position: left top, right bottom;
+    background-repeat: no-repeat, no-repeat;
+}
+li.dad.no-spps.no-uma {
+    background-image: url("../image/dad.png"), url("../image/no-spps.png"), url("../image/no-uma.png");
+    background-position: left top, left bottom, right bottom;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+}
+
+li.mom.no-spps {
+    background-image: url("../image/mom.png"), url("../image/no-spps.png");
+    background-position: left top, left bottom;
+    background-repeat: no-repeat, no-repeat;
+}
+li.mom.no-uma {
+    background-image: url("../image/mom.png"), url("../image/no-uma.png");
+    background-position: left top, right bottom;
+    background-repeat: no-repeat, no-repeat;
+}
+li.mom.no-spps.no-uma {
+    background-image: url("../image/mom.png"), url("../image/no-spps.png"), url("../image/no-uma.png");
+    background-position: left top, left bottom, right bottom;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+}
+
+li.blank {
+   background: none;
+   border: none;
+}
+
+/*~ calendar printing ------------------------------------------------------------------------- */
+
+@media print {
+   .page-break {
+      page-break-after: always;
+   }
+   section {
+      page-break-after: always;
+   }
+   h2 {
+      margin-top: 2em;
+   }
+}
