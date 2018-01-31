@@ -21,6 +21,19 @@ def VACATIONS = [
 def WEEKEND_ALTERATIONS = [ // a list of saturdays when the weekend schedule is altered
 ]
 
+def NO_SCHOOL = "no-school" // css class for no school
+def NO_SPPS   = "no-spps"   // css class for no spps
+def NO_UMA    = "no-uma"    // css class for no uma
+def NO_SCHOOL_DATES = [     // a list of dates without school
+    "1-1": NO_SCHOOL,
+    "1-2": NO_SPPS,
+    "1-3": NO_UMA,
+]
+
+def NOTES = [ // a list dates with of notes
+    "1-6": "something of note",
+]
+
 // start the document
 
 println "<?xml version='1.0' encoding='utf-8'?>"
@@ -29,10 +42,8 @@ println "<html>"
 println ""
 println "  <head>"
 println "    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>"
-println "    <title>grid</title>"
-println "    <link rel='stylesheet' type='text/css' media='screen' href='css/amiller.css' />"
-println "    <link rel='stylesheet' type='text/css' media='screen' href='css/amiller-bb.css' />"
-println "    <link rel='stylesheet' type='text/css' media='screen,print' href='css/calendar-grid.css' />"
+println "    <title>${year} Calendar</title>"
+println "    <link rel='stylesheet' type='text/css' href='css/calendar-grid.css' />"
 println "  </head>"
 println ""
 println "  <body>"
@@ -98,7 +109,7 @@ def weekendAt = YEARS_FIRST_WEEKEND
         String cssClass = ""
         String notes = ""
 
-        String dateKey = "${year}-${month}-${day}"
+        String dateKey = "${month}-${day}"
 
         // 1st check holidays
         def holiday = HOLIDAYS[dateKey]
@@ -132,6 +143,19 @@ def weekendAt = YEARS_FIRST_WEEKEND
                 weekendAt = ( (weekendAt == "dad") ? "mom" : "dad" )
             }
         }
+
+        // check for no school
+        def noSchool = NO_SCHOOL_DATES[dateKey]
+        if (noSchool) {
+            cssClass += " ${noSchool}"
+        }
+
+        // add additional notes
+        def note = NOTES[dateKey]
+        if (note) {
+            notes += "<br />${note}"
+        }
+
 
         // print the day
         println "        <li class='${cssClass}'>${day}${notes}</li>"
