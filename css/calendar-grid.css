@@ -1,5 +1,26 @@
 
+body {
+   background-color: #2b2b2b; /* gray17 */
+   background: white url("../image/page-background.png") repeat;
+   color: #a3a3a3; /* gray64 */
+}
+
+h2 {
+   margin: 0;
+}
+
+a, a:link {
+   color: #a3a3a3; /* gray64 */
+}
+a:visited {
+   color: #707070; /* gray44 */
+}
+a:hover {
+   color: #d2b48c; /* tan */
+}
+
 section {
+   background: #222;
    border: 1px solid #777;
    border-radius: 1em;
    float: left;
@@ -7,11 +28,15 @@ section {
    padding: 1em;
 }
 
-/*~ calendar layout --------------------------------------------------------------------------- */
+/*~ printing ---------------------------------------------------------------------------------- */
 
-h2 {
-   margin: 0;
+@media print {
+   section {
+      page-break-after: always;
+   }
 }
+
+/*~ calendar layout --------------------------------------------------------------------------- */
 
 .row, .month-header {
    display: table-row;
@@ -55,11 +80,11 @@ li.day-of-week {
 }
 
 li.day {
-    background: white;
+   background: white;
 }
 
 li.dad {
-    background: orange url("../image/dad.png") left top no-repeat;
+   background: orange url("../image/dad.png") left top no-repeat;
 }
 
 li.mom {
@@ -68,52 +93,38 @@ li.mom {
 
 
 li.dad.no-spps {
-    background-image: url("../image/dad.png"), url("../image/no-spps.png");
-    background-position: left top, left bottom;
-    background-repeat: no-repeat, no-repeat;
+   background-image: url("../image/dad.png"), url("../image/no-spps.png");
+   background-position: left top, center bottom;
+   background-repeat: no-repeat, no-repeat;
 }
 li.dad.no-uma {
-    background-image: url("../image/dad.png"), url("../image/no-uma.png");
-    background-position: left top, right bottom;
-    background-repeat: no-repeat, no-repeat;
+   background-image: url("../image/dad.png"), url("../image/no-uma.png");
+   background-position: left top, center bottom;
+   background-repeat: no-repeat, no-repeat;
 }
-li.dad.no-spps.no-uma {
-    background-image: url("../image/dad.png"), url("../image/no-spps.png"), url("../image/no-uma.png");
-    background-position: left top, left bottom, right bottom;
-    background-repeat: no-repeat, no-repeat, no-repeat;
+li.dad.no-school {
+   background-image: url("../image/dad.png"), url("../image/no-school.png");
+   background-position: left top, center bottom;
+   background-repeat: no-repeat, no-repeat;
 }
 
 li.mom.no-spps {
-    background-image: url("../image/mom.png"), url("../image/no-spps.png");
-    background-position: left top, left bottom;
-    background-repeat: no-repeat, no-repeat;
+   background-image: url("../image/mom.png"), url("../image/no-spps.png");
+   background-position: left top, center bottom;
+   background-repeat: no-repeat, no-repeat;
 }
 li.mom.no-uma {
-    background-image: url("../image/mom.png"), url("../image/no-uma.png");
-    background-position: left top, right bottom;
-    background-repeat: no-repeat, no-repeat;
+   background-image: url("../image/mom.png"), url("../image/no-uma.png");
+   background-position: left top, center bottom;
+   background-repeat: no-repeat, no-repeat;
 }
-li.mom.no-spps.no-uma {
-    background-image: url("../image/mom.png"), url("../image/no-spps.png"), url("../image/no-uma.png");
-    background-position: left top, left bottom, right bottom;
-    background-repeat: no-repeat, no-repeat, no-repeat;
+li.mom.no-school {
+   background-image: url("../image/mom.png"), url("../image/no-school.png");
+   background-position: left top, center bottom;
+   background-repeat: no-repeat, no-repeat;
 }
 
 li.blank {
    background: none;
    border: none;
-}
-
-/*~ calendar printing ------------------------------------------------------------------------- */
-
-@media print {
-   .page-break {
-      page-break-after: always;
-   }
-   section {
-      page-break-after: always;
-   }
-   h2 {
-      margin-top: 2em;
-   }
 }
