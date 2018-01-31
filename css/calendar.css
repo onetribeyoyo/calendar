@@ -31,7 +31,15 @@ section {
 /*~ printing ---------------------------------------------------------------------------------- */
 
 @media print {
+   body {
+      background: none;
+   }
    section {
+      background: none;
+      color: black;
+      float: none;
+   }
+   section:nth-child(2n) {
       page-break-after: always;
    }
 }
@@ -64,6 +72,10 @@ li.dad, li.mom, li.day, li.blank {
 .day-of-week-head {
    font-weight: bold;
    text-align: center;
+}
+
+.notes {
+   font-size: 0.85em;
 }
 
 /*~ calendar decorations ---------------------------------------------------------------------- */

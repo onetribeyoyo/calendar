@@ -25,13 +25,12 @@ def NO_SCHOOL = "no-school" // css class for no school
 def NO_SPPS   = "no-spps"   // css class for no spps
 def NO_UMA    = "no-uma"    // css class for no uma
 def NO_SCHOOL_DATES = [     // a list of dates without school
-    "1-1": NO_SCHOOL,
-    "1-2": NO_SPPS,
-    "1-3": NO_UMA,
 ]
 
 def NOTES = [ // a list dates with of notes
-    "1-6": "something of note",
+]
+
+def AMMENDMENTS = [
 ]
 
 // start the document
@@ -43,16 +42,15 @@ println ""
 println "  <head>"
 println "    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>"
 println "    <title>${year} Calendar</title>"
-println "    <link rel='stylesheet' type='text/css' href='css/calendar-grid.css' />"
+println "    <link rel='stylesheet' type='text/css' href='css/calendar.css' />"
 println "  </head>"
 println ""
 println "  <body>"
 
-
 def weekendAt = YEARS_FIRST_WEEKEND
 
 // for each month
-(1..11).each { month ->
+(1..12).each { month ->
 
     String monthLabel = Month.of(month).getDisplayName(TextStyle.FULL, Locale.US)
 
@@ -109,7 +107,7 @@ def weekendAt = YEARS_FIRST_WEEKEND
         String cssClass = ""
         String notes = ""
 
-        String dateKey = "${month}-${day}"
+        String dateKey = "${year}-${month}-${day}"
 
         // 1st check holidays
         def holiday = HOLIDAYS[dateKey]
@@ -158,7 +156,7 @@ def weekendAt = YEARS_FIRST_WEEKEND
 
 
         // print the day
-        println "        <li class='${cssClass}'>${day}${notes}</li>"
+        println "        <li class='${cssClass}'>${day}<span class='notes'>${notes}</span></li>"
 
         // if the current day is saturday, finish the week
         if (dayOfWeek == 6) {
@@ -186,12 +184,9 @@ def weekendAt = YEARS_FIRST_WEEKEND
 println "    <section>"
 println "      <h2> Ammendments </h2>"
 println "      <ul>"
-println "      <li>We amend our holiday agreement such that the boys are at the same location for both New Year's Eve and New Year's Day.</li>"
-println "      <li>With memorial day weekend being coincident with Alex's birthday, I suggest we modify our agreement to have the two always be spent with the same parent.</li>"
-println "      <li>Weekend of Mother's day be spent with Mom.</li>"
-println "      <li>Weekend of Father's day be spent with Dad.</li>"
-println "      <li>When Mom's birthday falls on a weekend the boys spend the entire weekend with Mom.</li>"
-println "      <li>When Dad's birthday falls on a weekend the boys spend the entire weekend with Dad.</li>"
+AMMENDMENTS.each { ammendment ->
+    println "        <li>${ammendment}</li>"
+}
 println "      </ul>"
 println "    </section>"
 
