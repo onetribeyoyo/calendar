@@ -6,19 +6,63 @@ import java.time.temporal.TemporalAdjusters
 
 int year = 2018
 
+String pageTitle = "calendar-${year}"
+
+def DAD = "dad" // css class for nights spent with Dad
+def MOM = "mom" // css class for nights spent with Mom
+
 def DAY_OF_WEEK_DEFAULTS = [ // unless otherwise specified
     0: "",
-    1: "dad", 2: "dad",
-    3: "mom", 4: "mom",
+    1: DAD,
+    2: DAD,
+    3: MOM,
+    4: MOM,
     5: "",
     6: "",
 ]
-def YEARS_FIRST_WEEKEND = "mom" // for first weekend of the year
+def YEARS_FIRST_WEEKEND = MOM // start the first weekend of the year
+def WEEKEND_ALTERATIONS = [ // a list of Sundays when the weekend schedule is altered; an entry "stutters" the normal rotation.
+]
+
 def HOLIDAYS = [
+    "2018-1-1":   [ odd: MOM, even: DAD, label: "New Years Day" ],
+
+    "2018-1-15":  [ odd: DAD, even: MOM, label: "MLK Day" ],
+
+    "2018-3-30":  [ odd: MOM, even: DAD, label: "Easter Weekend" ],
+    "2018-3-31":  [ odd: MOM, even: DAD, label: "Easter Weekend" ],
+    "2018-4-1":   [ odd: MOM, even: DAD, label: "Easter" ],
+
+    "2018-5-13":  [ odd: MOM, even: MOM, label: "Mother's Day" ],
+
+    "2018-5-25":  [ odd: MOM, even: DAD, label: "Memorial Day Weekend" ],
+    "2018-5-26":  [ odd: MOM, even: DAD, label: "Memorial Day Weekend" ],
+    "2018-5-27":  [ odd: MOM, even: DAD, label: "Memorial Day Weekend" ],
+    //"2018-5-28":  [ odd: MOM, even: DAD, label: "Memorial Day" ],
+
+    "2018-6-17":  [ odd: DAD, even: DAD, label: "Father's Day" ],
+
+    "2018-7-4":   [ odd: DAD, even: MOM, label: "4th of July" ],
+
+    "2018-8-31":  [ odd: MOM, even: DAD, label: "Labour Day Weekend" ],
+    "2018-9-1":   [ odd: MOM, even: DAD, label: "Labour Day Weekend" ],
+    "2018-9-2":   [ odd: MOM, even: DAD, label: "Labour Day Weekend" ],
+    "2018-9-3":   [ odd: MOM, even: DAD, label: "Labour Day" ],
+
+    "2018-10-31": [ odd: DAD, even: MOM, label: "Halloween" ],
+
+    "2018-11-22": [ odd: DAD, even: MOM, label: "Thanksgiving Day" ],
+    "2018-11-23": [ odd: DAD, even: MOM, label: "Day After Thanksgiving" ],
+
+    "2018-11-24": [ odd: MOM, even: DAD, label: "Thanksgiving Weekend" ],
+    "2018-11-25": [ odd: MOM, even: DAD, label: "Thanksgiving Weekend" ],
+
+    "2018-12-24": [ odd: DAD, even: MOM, label: "Christmas Eve" ],
+    "2018-12-25": [ odd: MOM, even: DAD, label: "Christmas Day" ],
+
+    "2018-12-31": [ odd: DAD, even: MOM, label: "New Years Eve" ],
 ]
 def VACATIONS = [
-]
-def WEEKEND_ALTERATIONS = [ // a list of saturdays when the weekend schedule is altered
 ]
 
 def NO_SCHOOL = "no-school" // css class for no school
@@ -41,7 +85,7 @@ println "<html>"
 println ""
 println "  <head>"
 println "    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>"
-println "    <title>${year} Calendar</title>"
+println "    <title>${pageTitle}</title>"
 println "    <link rel='stylesheet' type='text/css' href='css/calendar.css' />"
 println "  </head>"
 println ""
@@ -138,7 +182,7 @@ def weekendAt = YEARS_FIRST_WEEKEND
         if (dayOfWeek == 0) {
             // after each Sunday, swap weekendAt, but only if this isn't one of those altered weekends
             if (!(dateKey in WEEKEND_ALTERATIONS))  {
-                weekendAt = ( (weekendAt == "dad") ? "mom" : "dad" )
+                weekendAt = ( (weekendAt == DAD) ? MOM : DAD )
             }
         }
 
