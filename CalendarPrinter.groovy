@@ -1,10 +1,14 @@
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.Month
 import java.time.format.TextStyle
 import java.time.temporal.TemporalAdjusters
 
 class CalendarPrinter {
+
+    LocalDate printDate = LocalDate.now()
+    LocalTime printTime = LocalTime.now()
 
     void print(CalendarData data) {
         startDocument(data.YEAR)
@@ -19,6 +23,7 @@ class CalendarPrinter {
         }
 
         printAmmendments(data.AMMENDMENTS)
+
         closeDocument()
     }
 
@@ -176,6 +181,7 @@ class CalendarPrinter {
     }
 
     void finishMonth() {
+        println "      <br /> ${printTimestamp()}"
         println "    </section>"
     }
 
@@ -188,8 +194,13 @@ class CalendarPrinter {
                 println "        <li>${ammendment}</li>"
             }
             println "      </ul>"
+            println "      <br /> ${printTimestamp()}"
             println "    </section>"
         }
+    }
+
+    String printTimestamp() {
+        "${printDate} ${printTime.hour}:${printTime.minute}"
     }
 
     void closeDocument() {
