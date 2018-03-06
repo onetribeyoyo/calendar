@@ -30,9 +30,19 @@ section {
 
 /*~ printing ---------------------------------------------------------------------------------- */
 
+.non-printing {
+   display: none;
+}
+
+@page {
+    size: auto; /* auto is the initial value */
+    margin: 25mm 25mm 25mm 25mm; /* this affects the margin in the printer settings */
+}
+
 @media print {
    body {
       background: none;
+      margin: 0px; /* this affects the margin on the content before sending to printer */
    }
    section {
       background: none;
