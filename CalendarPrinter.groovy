@@ -10,6 +10,8 @@ class CalendarPrinter {
     LocalDate printDate = LocalDate.now()
     LocalTime printTime = LocalTime.now()
 
+    Map dayCounts = [:]
+
     void print(CalendarData data) {
         startDocument(data.YEAR)
 
@@ -24,7 +26,20 @@ class CalendarPrinter {
 
         printAmmendments(data.AMMENDMENTS)
 
+        printSummary()
+
         closeDocument()
+    }
+
+    void countDay(int month, String cssClass) {
+        Map monthCounts = dayCounts[month]
+        if (monthCounts == null) {
+            monthCounts = [:]
+            dayCounts[month] = monthCounts
+        }
+
+        int classCount = monthCounts[cssClass] ?: 0
+        monthCounts[cssClass] = classCount + 1
     }
 
     void startDocument(Integer year) {
@@ -83,7 +98,12 @@ class CalendarPrinter {
 
             String dateKey = "${year}-${month}-${day}"
 
-            String cssClass = generateCssClasses(year, dayOfWeek, weekend, data, dateKey)
+            String parrentClass = generateParentCssClass(year, dayOfWeek, weekend, data, dateKey)
+            String schoolClass = generateNoSchoolCssClasses(data, dateKey)
+            String cssClass = "${parrentClass} ${schoolClass}"
+
+            countDay(month, parrentClass)
+
             String notes = generateNotes(data, dateKey)
 
             // print the day
@@ -112,7 +132,7 @@ class CalendarPrinter {
         return weekend
     }
 
-    String generateCssClasses(int year, int dayOfWeek, def weekend, CalendarData data, String dateKey) {
+    String generateParentCssClass(int year, int dayOfWeek, def weekend, CalendarData data, String dateKey) {
         String cssClass = ""
 
         // 1st check holidays
@@ -121,10 +141,10 @@ class CalendarPrinter {
             cssClass = ( (year % 2) ? holiday.odd : holiday.even )
         }
 
-        // 2nd check vacations
-        def vacation = data.VACATIONS[dateKey]
-        if (!cssClass && vacation) {
-            cssClass = vacation.cssClass
+        // 2nd check changes
+        def change = data.CHANGES[dateKey]
+        if (!cssClass && change) {
+            cssClass = change.cssClass
         }
 
         // 3rd check defaults
@@ -136,13 +156,12 @@ class CalendarPrinter {
             }
         }
 
-        // check for no school
-        def noSchool = data.NO_SCHOOL_DATES[dateKey]
-        if (noSchool) {
-            cssClass += " ${noSchool}"
-        }
-
         return cssClass
+    }
+
+    String generateNoSchoolCssClasses(CalendarData data, String dateKey) {
+        // check for no school
+        return data.NO_SCHOOL_DATES[dateKey] ?: ""
     }
 
     String generateNotes(CalendarData data, String dateKey) {
@@ -154,10 +173,10 @@ class CalendarPrinter {
             notes += "<br />${holiday.label}"
         }
 
-        // 2nd check vacations
-        def vacation = data.VACATIONS[dateKey]
-        if (vacation?.label) {
-            notes += "<br />${vacation.label}"
+        // 2nd check changes
+        def change = data.CHANGES[dateKey]
+        if (change?.label) {
+            notes += "<br />${change.label}"
         }
 
         // finally add additional notes
@@ -197,6 +216,80 @@ class CalendarPrinter {
             println "      <br /> ${printTimestamp()}"
             println "    </section>"
         }
+    }
+
+    void printSummary() {
+
+        int total = 0
+        int dadTotal = 0
+        int momTotal = 0
+
+        println "    <section>"
+        println "    </section>"
+        println "    <section>"
+        println "      <h2> Summary </h2>"
+
+        println "      <table>"
+
+        println "        <tr>"
+        println "          <th> </th>"
+        println "          <th> dad </th>"
+        println "          <th> + </th>"
+        println "          <th> mom </th>"
+        println "          <th> = </th>"
+        println "          <th> total </th>"
+        println "        </tr>"
+        dayCounts.each { month, counts ->
+            String monthLabel = Month.of(month).getDisplayName(TextStyle.FULL, Locale.US)
+
+            dadTotal += counts.dad
+            momTotal += counts.mom
+
+            int monthTotal = counts.dad + counts.mom
+
+            total += monthTotal
+
+            println "        <tr>"
+            println "          <th> ${monthLabel} </th>"
+            println "          <td> ${counts.dad} </td>"
+            println "          <td> + </td>"
+            println "          <td> ${counts.mom} </td>"
+            println "          <td> = </td>"
+            println "          <td> ${monthTotal} </td>"
+            println "        </tr>"
+        }
+        println "        <tr>"
+        println "          <th> </th>"
+        println "          <td> ${dadTotal} </td>"
+        println "          <td> + </td>"
+        println "          <td> ${momTotal} </td>"
+        println "          <td> = </td>"
+        println "          <td> ${total} </td>"
+        println "        </tr>"
+
+        println "        <tr>"
+        println "          <th> </th>"
+        println "          <td> ${dadTotal - momTotal} </td>"
+        println "          <td> </td>"
+        println "          <td> ${momTotal - dadTotal} </td>"
+        println "          <td> </td>"
+        println "          <td> </td>"
+        println "        </tr>"
+
+        int percentagePrecision = 1
+        println "        <tr>"
+        println "          <th> </th>"
+        println "          <td> ${((double)((dadTotal / total) * 100)).round(percentagePrecision)}% </td>"
+        println "          <td> </td>"
+        println "          <td> ${((double)((momTotal / total) * 100)).round(percentagePrecision)}% </td>"
+        println "          <td> </td>"
+        println "          <td> </td>"
+        println "        </tr>"
+
+        println "      </table>"
+
+        println "      <br /> ${printTimestamp()}"
+        println "    </section>"
     }
 
     String printTimestamp() {
