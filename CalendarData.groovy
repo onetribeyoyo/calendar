@@ -15,6 +15,8 @@ class CalendarData {
     static final def YEARS_FIRST_WEEKEND = CalendarConstants.MOM // start the first weekend of the year
 
     static final def WEEKEND_ALTERATIONS = [ // a list of Sundays when the weekend schedule is altered; an entry "stutters" the normal rotation.
+        // for example
+        "2018-4-1",
     ]
 
     static final def HOLIDAYS = [
@@ -56,16 +58,23 @@ class CalendarData {
         "2018-12-31": [ odd: CalendarConstants.DAD, even: CalendarConstants.MOM, label: "New Years Eve" ],
     ]
 
-    static final def VACATIONS = [
+    static final def CHANGES = [ // vacations, swaps, ...
+        // for example
+        "2018-6-20": [ cssClass: CalendarConstants.MOM, label: "What's going on" ],
     ]
 
     static final def NO_SCHOOL_DATES = [ // a list of dates without school
+        "2018-1-1": CalendarConstants.NO_SCHOOL,
+        "2018-1-2": CalendarConstants.NO_SCHOOL,
+        "2018-1-12": CalendarConstants.NO_UMA,
     ]
 
     static final def NOTES = [ // a list dates with of notes
+        "2018-4-2": "Spring Break",
     ]
 
     static final List<String> AMMENDMENTS = [ // a list of ammendment notes
+        "something of note",
     ]
 
 }
