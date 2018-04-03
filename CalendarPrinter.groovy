@@ -21,7 +21,7 @@ class CalendarPrinter {
         (1..12).each { int month ->
             startMonth(data.YEAR, month)
             weekend = printWeeks(data.YEAR, month, weekend, data)
-            finishMonth()
+            finishMonth(month)
         }
 
         printAmmendments(data.AMMENDMENTS)
@@ -199,8 +199,12 @@ class CalendarPrinter {
         }
     }
 
-    void finishMonth() {
-        println "      <br /> ${printTimestamp()}"
+    void finishMonth(int month) {
+        println "      <br />"
+        print "<small>"
+        print printTimestamp()
+        print " ( ${dayCounts[month].dad}:${dayCounts[month].mom} )"
+        println "</small>"
         println "    </section>"
     }
 
