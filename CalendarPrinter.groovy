@@ -135,16 +135,16 @@ class CalendarPrinter {
     String generateParentCssClass(int year, int dayOfWeek, def weekend, CalendarData data, String dateKey) {
         String cssClass = ""
 
-        // 1st check holidays
-        def holiday = data.HOLIDAYS[dateKey]
-        if (holiday) {
-            cssClass = ( (year % 2) ? holiday.odd : holiday.even )
-        }
-
-        // 2nd check changes
+        // 1st check changes
         def change = data.CHANGES[dateKey]
         if (!cssClass && change) {
             cssClass = change.cssClass
+        }
+
+        // 2nd check holidays
+        def holiday = data.HOLIDAYS[dateKey]
+        if (!cssClass && holiday) {
+            cssClass = ( (year % 2) ? holiday.odd : holiday.even )
         }
 
         // 3rd check defaults
