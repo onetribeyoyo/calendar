@@ -88,6 +88,10 @@ li.dad, li.mom, li.day, li.blank {
    font-size: 0.85em;
 }
 
+.centered {
+   text-align: center;
+}
+
 /*~ calendar decorations ---------------------------------------------------------------------- */
 
 .day-of-week-head {
