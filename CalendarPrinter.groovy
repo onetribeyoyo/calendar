@@ -84,6 +84,8 @@ class CalendarPrinter {
         int dayOfWeek = 0 // Sunday == 0
 
         println "      <ul class='row'>"
+        // keep a counter of weeks, so we can pad all months to 6 weeks
+        int numberOfWeeks = 1
 
         // if necessary, pad first week with blanks
         if (monthStartsOnDay != 0) {
@@ -119,6 +121,7 @@ class CalendarPrinter {
                 // if there are more days in the month, start another week
                 if (day < daysInMonth) {
                     println "      <ul class='row'>"
+                    numberOfWeeks++
                 }
 
             } else if (day == daysInMonth) { // if it's the end of the month
@@ -127,6 +130,15 @@ class CalendarPrinter {
 
             dayOfWeek = (dayOfWeek + 1) % 7
             day++
+        }
+
+        while (numberOfWeeks < 6) {
+            println "      <ul class='row'>"
+            println "        <li class='blank'>"
+            println "          <span class='notes'></span>"
+            println "        </li>"
+            println "      </ul>"
+            numberOfWeeks++
         }
 
         return weekend
@@ -201,7 +213,7 @@ class CalendarPrinter {
 
     void finishMonth(int month) {
         println "      <br />"
-        print "<small>"
+        print "      <small>"
         print printTimestamp()
         print " ( ${dayCounts[month].dad}:${dayCounts[month].mom} )"
         println "</small>"
