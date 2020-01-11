@@ -159,7 +159,13 @@ class CalendarPrinter {
             cssClass = ( (year % 2) ? holiday.odd : holiday.even )
         }
 
-        // 3rd check defaults
+        // 3rd check weeks
+        def week = data.WEEKS[dateKey]
+        if (!cssClass && week) {
+            cssClass = week
+        }
+
+        // finally check defaults
         if (!cssClass) {
             if (dayOfWeek in [0, 5, 6]) {
                 cssClass = weekend
