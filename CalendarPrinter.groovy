@@ -26,7 +26,7 @@ class CalendarPrinter {
 
         printAmmendments(data.AMMENDMENTS)
 
-        printSummary()
+        printSummary(data.YEAR)
 
         closeDocument()
     }
@@ -219,10 +219,8 @@ class CalendarPrinter {
 
     void finishMonth(int month) {
         println "      <br />"
-        print "      <small>"
-        print printTimestamp()
-        print " ( ${dayCounts[month].dad}:${dayCounts[month].mom} )"
-        println "</small>"
+        String ts = timestamp( "( ${dayCounts[month].dad}:${dayCounts[month].mom} )" )
+        println "      ${ts}"
         println "    </section>"
     }
 
@@ -235,12 +233,13 @@ class CalendarPrinter {
                 println "        <li>${ammendment}</li>"
             }
             println "      </ul>"
-            println "      <br /> ${printTimestamp()}"
+            println "      <br />"
+            println "      ${timestamp()}"
             println "    </section>"
         }
     }
 
-    void printSummary() {
+    void printSummary(Integer year) {
 
         int total = 0
         int dadTotal = 0
@@ -249,7 +248,7 @@ class CalendarPrinter {
         println "    <section>"
         println "    </section>"
         println "    <section>"
-        println "      <h2> Summary </h2>"
+        println "      <h2> ${year} Summary </h2>"
 
         println "      <table>"
 
@@ -314,12 +313,12 @@ class CalendarPrinter {
 
         println "      </table>"
 
-        println "      <br /> ${printTimestamp()}"
+        println "      <br /> ${timestamp()}"
         println "    </section>"
     }
 
-    String printTimestamp() {
-        "${printDate} ${printTime.hour}:${printTime.minute}"
+    String timestamp(String msg = "") {
+        "      <small><small> ${printDate} ${printTime.hour}:${printTime.minute} ${msg} </small></small>"
     }
 
     void closeDocument() {
