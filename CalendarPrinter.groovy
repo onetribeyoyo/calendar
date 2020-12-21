@@ -13,22 +13,18 @@ class CalendarPrinter {
     Map dayCounts = [:]
 
     void print(CalendarData data) {
-        startDocument(data.YEAR)
-
-        def weekend = data.YEARS_FIRST_WEEKEND
+        def weekend = data.yearsFirstWeekend
 
         // for each month
         (1..12).each { int month ->
-            startMonth(data.YEAR, month)
-            weekend = printWeeks(data.YEAR, month, weekend, data)
+            startMonth(data.year, month)
+            weekend = printWeeks(data.year, month, weekend, data)
             finishMonth(month)
         }
 
-        printAmmendments(data.AMMENDMENTS)
+        printAmmendments(data.ammendments)
 
-        printSummary(data.YEAR)
-
-        closeDocument()
+        printSummary(data.year)
     }
 
     void countDay(int month, String cssClass) {
@@ -42,14 +38,14 @@ class CalendarPrinter {
         monthCounts[cssClass] = classCount + 1
     }
 
-    void startDocument(Integer year) {
+    void startDocument(years) {
         println "<?xml version='1.0' encoding='utf-8'?>"
         println ""
         println "<html>"
         println ""
         println "  <head>"
         println "    <meta http-equiv='content-type' content='text/html; charset=UTF-8'/>"
-        println "    <title>calendar-${year}</title>"
+        println "    <title>calendar for ${years}</title>"
         println "    <link rel='stylesheet' type='text/css' href='css/calendar.css' />"
         println "  </head>"
         println ""
@@ -148,26 +144,26 @@ class CalendarPrinter {
         String cssClass = ""
 
         // 1st check changes
-        def change = data.CHANGES[dateKey]
+        def change = data.changes[dateKey]
         if (!cssClass && change) {
             cssClass = change.cssClass
         }
 
         // 2nd check holidays
-        def holiday = data.HOLIDAYS[dateKey]
+        def holiday = data.holidays[dateKey]
         if (!cssClass && holiday) {
             cssClass = ( (year % 2) ? holiday.odd : holiday.even )
         }
 
         // 3rd check weeks
-        def week = data.WEEKS[dateKey]
+        def week = data.weeks[dateKey]
         if (!cssClass && week) {
             cssClass = week
         }
 
         // 4th, if nothing found, default to...
         if (!cssClass) {
-            cssClass = data.MASTER_DEFAULT
+            cssClass = data.masterDefault
         }
 
         // finally check defaults
@@ -175,7 +171,7 @@ class CalendarPrinter {
             if (dayOfWeek in [0, 5, 6]) {
                 cssClass = weekend
             } else {
-                cssClass = data.DAY_OF_WEEK_DEFAULTS[dayOfWeek]
+                cssClass = data.dayOfWeekDefaults[dayOfWeek]
             }
         }
 
@@ -184,26 +180,26 @@ class CalendarPrinter {
 
     String generateNoSchoolCssClasses(CalendarData data, String dateKey) {
         // check for no school
-        return data.NO_SCHOOL_DATES[dateKey] ?: ""
+        return data.noSchool[dateKey] ?: ""
     }
 
     String generateNotes(CalendarData data, String dateKey) {
         String notes = ""
 
         // 1st check holidays
-        def holiday = data.HOLIDAYS[dateKey]
+        def holiday = data.holidays[dateKey]
         if (holiday?.label) {
             notes += "<br />${holiday.label}"
         }
 
         // 2nd check changes
-        def change = data.CHANGES[dateKey]
+        def change = data.changes[dateKey]
         if (change?.label) {
             notes += "<br />${change.label}"
         }
 
         // finally add additional notes
-        def note = data.NOTES[dateKey]
+        def note = data.notes[dateKey]
         if (note) {
             notes += "<br />${note}"
         }
@@ -213,7 +209,7 @@ class CalendarPrinter {
 
     // swap weekend, but only if this isn't one of those altered weekends
     def nextWeekend(def lastWeekend, CalendarData data, String dateKey) {
-        if (dateKey in data.WEEKEND_ALTERATIONS) {
+        if (dateKey in data.weekendAlterations) {
             // don't switch weekends
             return lastWeekend
         } else {
@@ -277,13 +273,14 @@ class CalendarPrinter {
 
             println "        <tr>"
             println "          <th class='centered'> ${monthLabel} </th>"
-            println "          <td class='centered'> ${counts.dad} </td>"
+            println "          <td class='centered'> ${counts.dad ?: 0} </td>"
             println "          <td class='centered'> + </td>"
-            println "          <td class='centered'> ${counts.mom} </td>"
+            println "          <td class='centered'> ${counts.mom ?: 0} </td>"
             println "          <td class='centered'> = </td>"
             println "          <td class='centered'> ${monthTotal} </td>"
 
-            int dadPercent = (100 * counts.dad / monthTotal)
+            //int dadPercent = (100 * counts.dad / monthTotal)
+            int dadPercent = (100 * dadTotal / monthTotal)
             //println "          <td class='centered'> ( ${dadPercent}% dad ) </td>"
 
             println "        </tr>"
