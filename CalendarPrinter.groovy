@@ -165,6 +165,11 @@ class CalendarPrinter {
             cssClass = week
         }
 
+        // 4th, if nothing found, default to...
+        if (!cssClass) {
+            cssClass = data.MASTER_DEFAULT
+        }
+
         // finally check defaults
         if (!cssClass) {
             if (dayOfWeek in [0, 5, 6]) {
@@ -263,10 +268,10 @@ class CalendarPrinter {
         dayCounts.each { month, counts ->
             String monthLabel = Month.of(month).getDisplayName(TextStyle.FULL, Locale.US)
 
-            dadTotal += counts.dad
-            momTotal += counts.mom
+            dadTotal += counts?.dad ?: 0
+            momTotal += counts?.mom ?: 0
 
-            int monthTotal = counts.dad + counts.mom
+            int monthTotal = (counts.dad ?: 0) + (counts.mom ?: 0)
 
             total += monthTotal
 
