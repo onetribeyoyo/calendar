@@ -279,9 +279,9 @@ class CalendarPrinter {
             println "          <td class='centered'> = </td>"
             println "          <td class='centered'> ${monthTotal} </td>"
 
-            //int dadPercent = (100 * counts.dad / monthTotal)
-            int dadPercent = (100 * dadTotal / monthTotal)
-            //println "          <td class='centered'> ( ${dadPercent}% dad ) </td>"
+            int dadPercent = (100 * counts.dad / monthTotal)
+            //int dadPercent = (100 * dadTotal / monthTotal)
+            println "          <td class='centered'> <small> ( ${dadPercent}% dad ) </small> </td>"
 
             println "        </tr>"
         }
